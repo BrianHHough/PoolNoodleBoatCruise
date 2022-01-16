@@ -6,12 +6,30 @@ import { MoralisProvider } from "react-moralis";
 import Web3Provider from "../context/Web3Context"
 
 function MyApp({ Component, pageProps }: AppProps) {
+  if (!process.env.MORALIS_APPLICATION_ID || !process.env.MORALIS_SERVER_ID) {
+    
+    return (
+          <>
+            <h3>Moralis App_ID and Server_ID has not been set:</h3>
+            <p>
+              Follow the steps on the <a href="https://docs.moralis.io/getting-started/quick-start" target="_blank">Moralis documentation</a> to create a new Moralis project.
+              Then find your application's app id and server id and paste them in a root <b>.env</b> file for both <b>.env.development</b> and <b>.env.production</b> like so:
+            </p>
+            <pre>
+              <code>
+                MORALIS_APPLICATION_ID='[APP_ID]'<br/>
+                MORALIS_SERVER_ID='[SERVER_ID]'
+              </code>
+            </pre>
+          </>
+    )
+  }
   return (
     <MoralisProvider
-      appId={process.env.NEXT_PUBLIC_MORALIS_APP_ID || ""}
-      serverUrl={process.env.NEXT_PUBLIC_MORALIS_SERVER_URL || ""}
+      appId={process.env.MORALIS_APPLICATION_ID || ""}
+      serverUrl={process.env.MORALIS_SERVER_ID || ""}
     >
-      {/* <Web3Provider> */}
+      <Web3Provider>
         <div>
           <nav className="border-b p-6">
           <p className="text-4xl font-bold">Pool Noodle Boat Cruise</p>
@@ -45,7 +63,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </nav>
           <Component {...pageProps} />
         </div>
-      {/* </Web3Provider> */}
+      </Web3Provider>
     </MoralisProvider>
   )
 }
